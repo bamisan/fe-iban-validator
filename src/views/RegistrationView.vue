@@ -70,7 +70,9 @@
 import { ref } from "vue";
 import axios from "@/services/axios";
 import { nameRules, emailRules, passwordRules } from "@/utils/validationRules";
-import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const credentials = ref({
   name: "",
@@ -80,7 +82,6 @@ const credentials = ref({
 });
 const loading = ref(false);
 const errors = ref({});
-const store = useStore();
 
 const clearError = (field) => {
   if (errors.value[field]) {
@@ -99,9 +100,11 @@ const submit = async () => {
       confirm_password: credentials.value.confirmPassword,
     });
 
-    store.commit("setToken", data.data.token);
+    localStorage.setItem("token", data.data.token);
 
     alert("Registered successfully.");
+
+    router.push({ name: "user-dashboard" });
 
     errors.value = {};
 

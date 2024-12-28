@@ -3,38 +3,26 @@
     <v-row align="center" justify="center">
       <v-col cols="4" sm="4" md="4">
         <v-card :loading="loading" class="pa-1 custom-card">
-          <v-card-title class="text-h5 text-center">IBAN</v-card-title>
+          <v-card-title class="text-h5 text-center">
+            <span role="img" aria-label="validate">🗝️</span>
+          </v-card-title>
           <v-card-text class="mt-2">
             <v-form>
               <v-text-field
-                v-model="credentials.email"
-                label="Email"
-                :rules="emailRules"
-                :error-messages="errors.email"
+                v-model="iban"
+                :error-messages="errors.iban"
+                label="IBAN"
                 required
-                type="email"
-                variant="outlined"
-                @input="clearError('email')"
-              ></v-text-field>
-
-              <v-text-field
-                v-model="credentials.password"
-                label="Password"
-                :rules="passwordRules"
-                :error-messages="errors.password"
-                required
-                type="password"
                 variant="outlined"
                 class="mt-2"
-                @input="clearError('email')"
+                @input="clearError('iban')"
               ></v-text-field>
 
               <v-btn class="mt-4" block color="primary" @click="submit">
-                Login
+                Save
               </v-btn>
-
-              <v-btn class="mt-2" block text :to="{ name: 'registration' }">
-                Don't have an account? Register
+              <v-btn class="mt-4" block color="default" @click="logout">
+                Logout
               </v-btn>
             </v-form>
           </v-card-text>
@@ -45,17 +33,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "@/services/axios";
-import { emailRules, passwordRules } from "@/utils/validationRules";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const credentials = ref({
-  email: "",
-  password: "",
-});
+const iban = ref();
 const loading = ref(false);
 const errors = ref({});
 
@@ -65,22 +49,20 @@ const clearError = (field) => {
   }
 };
 
+const logout = () => {
+  localStorage.removeItem("token");
+  router.push({ name: "login" });
+};
+
 const submit = async () => {
   loading.value = true;
 
   try {
-    const { data } = await axios.post("login", {
-      email: credentials.value.email,
-      password: credentials.value.password,
+    await axios.post("iban", {
+      iban: iban.value,
     });
 
-    localStorage.setItem("token", data.data.token);
-
-    alert("Login successfully.");
-
-    if (data.data.is_admin == false) {
-      router.push({ name: "user-dashboard" });
-    }
+    alert("IBAN Added successfully.");
 
     errors.value = {};
 
@@ -95,6 +77,13 @@ const submit = async () => {
     loading.value = false;
   }
 };
+
+onMounted(() => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push({ name: "login" });
+  }
+});
 </script>
 
 <style scoped>
