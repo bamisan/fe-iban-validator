@@ -3,14 +3,8 @@
     <v-row align="center" justify="center">
       <v-col cols="10" sm="10" md="10">
         <v-row style="padding: 10px">
-          <v-col cols="2"></v-col>
-          <v-col cols="6">
-            <v-alert type="info" class="ma-2" variant="tonal">
-              <span role="img" aria-label="hi">👋</span> Hello Admin! Here you
-              can see all the created IBANs of each user.
-            </v-alert>
-          </v-col>
-          <v-col cols="4" class="mt-4">
+          <v-col cols="11"> </v-col>
+          <v-col cols="1" class="mt-4">
             <v-btn @click="logout" color="default" class="align-self-center">
               Logout
             </v-btn>
@@ -26,6 +20,7 @@
               :items-length="totalItems"
               :loading="loading"
               @update:options="loadItems"
+              height="380"
             >
               <template v-slot:[`item.iban`]="{ value }">
                 <span cols="6">

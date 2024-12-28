@@ -3,13 +3,12 @@
     <v-row align="center" justify="center">
       <v-col cols="4" sm="4" md="4">
         <v-card :loading="loading" class="pa-1 custom-card">
-          <v-card-title class="text-h5 text-center">IBAN</v-card-title>
+          <v-card-title class="text-h5 text-center">IBAN WEB APP</v-card-title>
           <v-card-text class="mt-2">
             <v-form>
               <v-text-field
                 v-model="credentials.email"
                 label="Email"
-                :rules="emailRules"
                 :error-messages="errors.email"
                 required
                 type="email"
@@ -20,7 +19,6 @@
               <v-text-field
                 v-model="credentials.password"
                 label="Password"
-                :rules="passwordRules"
                 :error-messages="errors.password"
                 required
                 type="password"
@@ -47,7 +45,6 @@
 <script setup>
 import { ref } from "vue";
 import axios from "@/services/axios";
-import { emailRules, passwordRules } from "@/utils/validationRules";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -80,11 +77,11 @@ const submit = async () => {
 
     errors.value = {};
 
-    if (data.data.is_admin == false) {
+    if (data.data.is_admin == true) {
+      router.push({ name: "admin-dashboard" });
+    } else {
       router.push({ name: "user-dashboard" });
     }
-
-    router.push({ name: "admin-dashboard" });
 
     loading.value = false;
   } catch (error) {

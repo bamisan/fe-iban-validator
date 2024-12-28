@@ -1,30 +1,30 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import AdminDashboardView from "@/views/AdminDashboardView.vue";
-import LoginView from "../views/LoginView.vue";
-import RegistrationView from "../views/RegistrationView.vue";
-import UserDashboardView from "@/views/UserDashboardView.vue";
+import AdminDashboard from "@/views/AdminDashboard.vue";
+import Login from "../views/LoginView.vue";
+import Registration from "../views/RegistrationView.vue";
+import UserDashboard from "@/views/UserDashboard.vue";
 
 const routes = [
   {
     path: "/",
     name: "login",
-    component: LoginView,
+    component: Login,
   },
   {
     path: "/register",
     name: "registration",
-    component: RegistrationView,
+    component: Registration,
   },
   {
     path: "/user-dashboard",
     name: "user-dashboard",
-    component: UserDashboardView,
+    component: UserDashboard,
   },
   {
     path: "/admin-dashboard",
     name: "admin-dashboard",
-    component: AdminDashboardView,
+    component: AdminDashboard,
   },
 ];
 

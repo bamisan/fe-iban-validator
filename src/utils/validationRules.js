@@ -6,3 +6,5 @@ export const emailRules = [
 ];
 
 export const passwordRules = [(v) => !!v || "Password is required"];
+
+export const ibanRules = [(v) => !!v || "IBAN is required"];
