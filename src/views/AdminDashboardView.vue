@@ -2,6 +2,20 @@
   <v-container class="fill-height">
     <v-row align="center" justify="center">
       <v-col cols="10" sm="10" md="10">
+        <v-row style="padding: 10px">
+          <v-col cols="2"></v-col>
+          <v-col cols="6">
+            <v-alert type="info" class="ma-2" variant="tonal">
+              <span role="img" aria-label="hi">👋</span> Hello Admin! Here you
+              can see all the created IBANs of each user.
+            </v-alert>
+          </v-col>
+          <v-col cols="4" class="mt-4">
+            <v-btn @click="logout" color="default" class="align-self-center">
+              Logout
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-card class="pa-10 custom-card">
           <v-card-title class="text-h5 text-center"> </v-card-title>
           <v-card-text>
@@ -43,6 +57,11 @@ const serverItems = ref([]);
 const loading = ref(false);
 const totalItems = ref(0);
 const itemsPerPage = ref(10);
+
+const logout = () => {
+  localStorage.removeItem("token");
+  router.push({ name: "login" });
+};
 
 const loadItems = async (options) => {
   loading.value = true;
