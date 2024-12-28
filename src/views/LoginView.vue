@@ -78,11 +78,13 @@ const submit = async () => {
 
     alert("Login successfully.");
 
+    errors.value = {};
+
     if (data.data.is_admin == false) {
       router.push({ name: "user-dashboard" });
     }
 
-    errors.value = {};
+    router.push({ name: "admin-dashboard" });
 
     loading.value = false;
   } catch (error) {
