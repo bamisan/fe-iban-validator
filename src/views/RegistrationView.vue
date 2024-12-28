@@ -7,6 +7,16 @@
           <v-card-text class="mt-2">
             <v-form>
               <v-text-field
+                v-model="credentials.name"
+                label="Name"
+                :rules="nameRules"
+                :error-messages="errors.name"
+                required
+                variant="outlined"
+                @input="clearError('name')"
+              ></v-text-field>
+
+              <v-text-field
                 v-model="credentials.email"
                 label="Email"
                 :rules="emailRules"
@@ -14,6 +24,7 @@
                 required
                 type="email"
                 variant="outlined"
+                class="mt-2"
                 @input="clearError('email')"
               ></v-text-field>
 
@@ -26,15 +37,26 @@
                 type="password"
                 variant="outlined"
                 class="mt-2"
-                @input="clearError('email')"
+                @input="clearError('password')"
               ></v-text-field>
 
-              <v-btn class="mt-4" block color="primary" @click="submit">
-                Login
-              </v-btn>
+              <v-text-field
+                v-model="credentials.confirmPassword"
+                label="Confirm Password"
+                :rules="passwordRules"
+                :error-messages="errors.confirm_password"
+                required
+                type="password"
+                variant="outlined"
+                class="mt-2"
+                @input="clearError('confirm_password')"
+              ></v-text-field>
 
-              <v-btn class="mt-2" block text :to="{ name: 'registration' }">
-                Don't have an account? Register
+              <v-btn class="mt-2" block color="primary" @click="submit">
+                Register
+              </v-btn>
+              <v-btn class="mt-2" block text :to="{ name: 'login' }">
+                Already have an account? Login
               </v-btn>
             </v-form>
           </v-card-text>
@@ -47,12 +69,14 @@
 <script setup>
 import { ref } from "vue";
 import axios from "@/services/axios";
-import { emailRules, passwordRules } from "@/utils/validationRules";
+import { nameRules, emailRules, passwordRules } from "@/utils/validationRules";
 import { useStore } from "vuex";
 
 const credentials = ref({
+  name: "",
   email: "",
   password: "",
+  confirmPassword: "",
 });
 const loading = ref(false);
 const errors = ref({});
@@ -68,14 +92,16 @@ const submit = async () => {
   loading.value = true;
 
   try {
-    const { data } = await axios.post("login", {
+    const { data } = await axios.post("register", {
+      name: credentials.value.name,
       email: credentials.value.email,
       password: credentials.value.password,
+      confirm_password: credentials.value.confirmPassword,
     });
 
     store.commit("setToken", data.data.token);
 
-    alert("Login successfully.");
+    alert("Registered successfully.");
 
     errors.value = {};
 
@@ -86,7 +112,6 @@ const submit = async () => {
     } else {
       console.error("Unexpected error:", error.message);
     }
-
     loading.value = false;
   }
 };
