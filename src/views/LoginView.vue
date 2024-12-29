@@ -79,8 +79,10 @@ const submit = async () => {
 
     if (data.data.is_admin == true) {
       router.push({ name: "admin-dashboard" });
+      localStorage.setItem("role", "admin");
     } else {
       router.push({ name: "user-dashboard" });
+      localStorage.setItem("role", "user");
     }
 
     loading.value = false;

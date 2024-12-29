@@ -96,6 +96,7 @@ const submit = async () => {
     });
 
     localStorage.setItem("token", data.data.token);
+    localStorage.setItem("role", "user");
 
     alert("Registered successfully.");
 
